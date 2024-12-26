@@ -3,5 +3,7 @@ E-Commerce Hub is a comprehensive web application that simulates an online shopp
 Technologies Used:
 
 Frontend: JSP (JavaServer Pages), CSS for styling.
+
 Backend: Java Servlets, Apache Tomcat for server-side functionality.
+
 Database: MySQL Workbench for managing product and user data.
