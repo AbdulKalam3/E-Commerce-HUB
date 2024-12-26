@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Times New Roman", serif, sans-serif !important;
+}
+
+
+
+/* Header Styling */
+header {
+    background: linear-gradient(90deg, #2d598c, #ffbe0b);
+
+}
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.col {
+  padding-left: 0;
+  padding-right: 0;
+}
+.header {
+    display: grid;
+    grid-template-rows:auto 1fr;
+    grid-template-columns: 1fr;
+}
+.title .col:first-child {
+    justify-content: flex-start;
+}
+.title .col:nth-child(3){
+	align-items:bottom;
+}
+.title {
+	font-family: "PT Sans", serif;
+  font-weight: 700;
+  font-style: italic;
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+}
+
+.title .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+}
+
+.title img {
+    width: 100px;
+    height: auto;
+}
+
+.title h1 {
+    text-align: center;
+    color: white;
+    font-size: 50px;
+}
+
+
+
+/* Navlist */
+.navlist {
+    display: flex;
+    padding: 0 20px;
+}
+
+.navlist li {
+    list-style: none;
+    margin: 10px;
+}
+
+.navlist a {
+    display: flex;
+    gap: 5px;
+    font-size: 20px;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: white;
+}
+
+.navlist a:hover {
+    background-color: white;
+    color: #2d598c;
+}
+

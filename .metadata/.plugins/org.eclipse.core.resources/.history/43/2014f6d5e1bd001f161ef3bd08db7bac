@@ -1,0 +1,34 @@
+package commerce;
+import java.io.IOException;
+import java.sql.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/AddToCartServlet")
+public class AddToCart extends HttpServlet{
+	private static final long serialVersionUID = 1L;
+	
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/Ecommerce";
+	private static final String DB_USER = "root";
+	private static final String DB_PASSWORD = "mysql";
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String productName = request.getParameter("product_name");
+		String price = request.getParameter("price");
+		
+		try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String sql = "INSERT INTO cart (product_name, price) VALUES (?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, productName);
+            stmt.setString(2, price);
+            stmt.executeUpdate();
+            response.sendRedirect("index.jsp"); 
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().write("Error adding product to cart: " + e.getMessage());
+        }
+    }
+}

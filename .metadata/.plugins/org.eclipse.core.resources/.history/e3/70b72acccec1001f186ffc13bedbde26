@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Times New Roman", serif, sans-serif !important;
+}
+
+
+
+/* Header Styling */
+header {
+    background: linear-gradient(90deg, #2d598c, #ffbe0b);
+
+}
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.col {
+  padding-left: 0;
+  padding-right: 0;
+}
+.header {
+    display: grid;
+    grid-template-rows:auto 1fr;
+    grid-template-columns: 1fr;
+}
+.title .col:first-child {
+    justify-content: flex-start;
+}
+.title .col:nth-child(3){
+	align-items:bottom;
+}
+.title {
+	font-family: "PT Sans", serif;
+  font-weight: 700;
+  font-style: italic;
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+}
+
+.title .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+}
+
+.title img {
+    width: 100px;
+    height: auto;
+}
+
+.title h1 {
+    text-align: center;
+    color: white;
+    font-size: 50px;
+}
+
+
+
+/* Navlist */
+.navlist {
+    display: flex;
+    padding: 0 20px;
+}
+
+.navlist li {
+    list-style: none;
+    margin: 10px;
+}
+
+.navlist a {
+    display: flex;
+    gap: 5px;
+    font-size: 20px;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: white;
+}
+
+.navlist a:hover {
+    background-color: white;
+    color: #2d598c;
+}
+
+
+/* cart */
+.cart{
+	padding-top:100px;
+	display:grid;
+	grid-template-columns:1fr, 1fr, 1fr;
+	gap:20px;
+}
+.items{
+	text-align: center;
+    border-radius:8px;
+    box-shadow:0px 2px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding:10px 0px;
+    width:300px;
+    height:350px;
+}
+.items:hover{
+	transform:sacle(1.03);
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3); 
+}
+.items img{
+	width:200px;
+	height:200px;
+	object-fit:cover;
+	transition: transform 1s ease 0.3s;
+}
+.items img:hover{
+	transform:scale(2);
+	border-radius:8px;
+}
+.items-body{
+	justify-items:center;
+}
+.items-body .btn{
+	background-color:#A52A2A;
+	color:white;
+	padding:2px;
+	border-radius:4px;
+}
+.items-body .btn:hover{
+	background-color:#8B0000;
+}
+.items-body p{
+	font-size:20px;
+	font-weight:600;
+}
+.buy{
+	background-color:green;
+	color:white;
+	color:white;
+	padding:2px;
+	border-radius:4px;
+}
+.buy:hover{
+	transform:scale(1.03);
+}
+.btn,.buy{
+	 display: inline-block;
+}
+
+/* Quantity Update Buttons */
+.quantity-form{
+	background-color: darkgreen;
+}
+.quantity-input{
+	width:30px;
+}
+.quantity-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-buttons button {
+    padding: 5px 10px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.quantity-buttons button:hover {
+    background-color: #2d598c;
+}

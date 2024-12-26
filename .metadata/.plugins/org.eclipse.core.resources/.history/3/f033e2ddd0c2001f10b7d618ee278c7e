@@ -1,0 +1,86 @@
+package commerce;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.*;
+import java.sql.*;
+
+@WebServlet("/wishlistTocart")
+public class WishlistToCartServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+    private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/Ecommerce";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "mysql";
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String productName = request.getParameter("product_name");
+        String price = request.getParameter("price");
+        String imageUrl = request.getParameter("image_url");
+
+        if (productName != null && !productName.trim().isEmpty()) {
+            try {
+                // Load JDBC Driver
+                Class.forName(DB_DRIVER);
+
+                // Establish database connection
+                try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+
+                    // Check if the product exists in the wishlist
+                    String checkWishlistSql = "SELECT product_name FROM wishlist WHERE product_name = ?";
+                    PreparedStatement pstCheck = conn.prepareStatement(checkWishlistSql);
+                    pstCheck.setString(1, productName);
+                    ResultSet rsCheck = pstCheck.executeQuery();
+
+                    if (rsCheck.next()) {
+                        // Check if the product already exists in the cart
+                        String checkCartSql = "SELECT quantity FROM cart WHERE product_name = ?";
+                        PreparedStatement pstCheckCart = conn.prepareStatement(checkCartSql);
+                        pstCheckCart.setString(1, productName);
+                        ResultSet rsCart = pstCheckCart.executeQuery();
+
+                        if (rsCart.next()) {
+                            // Update quantity if product exists in the cart
+                            int currentQuantity = rsCart.getInt("quantity");
+                            String updateCartSql = "UPDATE cart SET quantity = ? WHERE product_name = ?";
+                            PreparedStatement pstUpdateCart = conn.prepareStatement(updateCartSql);
+                            pstUpdateCart.setInt(1, currentQuantity + 1); // Increment quantity by 1
+                            pstUpdateCart.setString(2, productName);
+                            pstUpdateCart.executeUpdate();
+                        } else {
+                            // Insert new product into the cart
+                            String insertCartSql = "INSERT INTO cart (product_name, price, image_url, quantity) VALUES (?, ?, ?, ?)";
+                            PreparedStatement pstInsertCart = conn.prepareStatement(insertCartSql);
+                            pstInsertCart.setString(1, productName);
+                            pstInsertCart.setString(2, price);
+                            pstInsertCart.setString(3, imageUrl);
+                            pstInsertCart.setInt(4, 1); // Initialize quantity to 1
+                            pstInsertCart.executeUpdate();
+                        }
+
+                        // Remove the product from the wishlist
+                        String removeWishlistSql = "DELETE FROM wishlist WHERE product_name = ?";
+                        PreparedStatement pstRemoveWishlist = conn.prepareStatement(removeWishlistSql);
+                        pstRemoveWishlist.setString(1, productName);
+                        pstRemoveWishlist.executeUpdate();
+
+                        // Redirect to cart page
+                        response.sendRedirect("cart.jsp");
+                    } else {
+                        response.sendRedirect("wishlist.jsp?error=Product not found in wishlist");
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                response.getWriter().write("JDBC Driver error: " + e.getMessage());
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.getWriter().write("Database error: " + e.getMessage());
+            }
+        } else {
+            response.sendRedirect("wishlist.jsp?error=Product name is missing");
+        }
+    }
+}

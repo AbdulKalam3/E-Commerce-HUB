@@ -1,0 +1,44 @@
+package commerce;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.sql.*;
+
+public class WishlistToCartServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String productId = request.getParameter("product_id");
+
+        if (productId != null && !productId.trim().isEmpty()) {
+            try {
+                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "username", "password");
+
+                String addToCartSql = "INSERT INTO cart (product_id, user_id) SELECT product_id, user_id FROM wishlist WHERE product_id = ?";
+                PreparedStatement pstAddToCart = conn.prepareStatement(addToCartSql);
+                pstAddToCart.setString(1, productId);
+                int resultAdd = pstAddToCart.executeUpdate();
+
+                if (resultAdd > 0) {
+                    String removeFromWishlistSql = "DELETE FROM wishlist WHERE product_id = ?";
+                    PreparedStatement pstRemoveFromWishlist = conn.prepareStatement(removeFromWishlistSql);
+                    pstRemoveFromWishlist.setString(1, productId);
+                    int resultRemove = pstRemoveFromWishlist.executeUpdate();
+
+                    if (resultRemove > 0) {
+                        response.sendRedirect("cart.jsp");
+                    } else {
+                        response.sendRedirect("wishlist.jsp?error=Unable to remove from wishlist");
+                    }
+                } else {
+                    response.sendRedirect("wishlist.jsp?error=Unable to add to cart");
+                }
+
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.sendRedirect("wishlist.jsp?error=Database error");
+            }
+        } else {
+            response.sendRedirect("wishlist.jsp?error=Product ID is missing");
+        }
+    }
+}

@@ -1,0 +1,36 @@
+package commerce;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/AddToWishlistServlet")
+public class AddToWishlistServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String productName = request.getParameter("product_name");
+        String price = request.getParameter("price");
+        String imageUrl = request.getParameter("image_url");
+
+        Map<String, String> wishlistItem = new HashMap<>();
+        wishlistItem.put("productName", productName);
+        wishlistItem.put("price", price);
+        wishlistItem.put("imageUrl", imageUrl);
+
+        List<Map<String, String>> wishlist = (List<Map<String, String>>) request.getSession().getAttribute("wishlist");
+        if (wishlist == null) {
+            wishlist = new ArrayList<>();
+        }
+
+        wishlist.add(wishlistItem);
+        request.getSession().setAttribute("wishlist", wishlist);
+
+        response.sendRedirect("index.jsp");
+    }
+}
